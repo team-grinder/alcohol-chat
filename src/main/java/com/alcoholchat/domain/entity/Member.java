@@ -1,6 +1,7 @@
 package com.alcoholchat.domain.entity;
 
 import com.alcoholchat.domain.enums.Role;
+import com.github.f4b6a3.uuid.UuidCreator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +22,9 @@ import java.util.UUID;
 public class Member extends BaseEntity{
 
     @Id
-    @Column(name = "member_id", updatable = false, length = 36)
-    private String memberId;
+    @Lob
+    @Column(name = "member_id", updatable = false)
+    private UUID memberId;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -51,7 +53,7 @@ public class Member extends BaseEntity{
 
     @PrePersist
     public void prePersist() {
-        memberId = memberId == null ? UUID.randomUUID().toString() : memberId;
+        memberId = UuidCreator.getTimeOrdered();
         role = role == null ? Role.MEMBER : role;
         isDeleted = isDeleted == null ? false : isDeleted;
     }
