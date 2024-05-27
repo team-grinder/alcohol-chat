@@ -38,8 +38,12 @@ public class Pub extends BaseEntity {
     @Column(name = "phone_num", nullable = false, length = 11)
     private String phoneNum;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted;
+
     @PrePersist
     public void prePersist() {
         pubId = UuidCreator.getTimeOrdered();
+        isDeleted = isDeleted == null ? false : isDeleted;
     }
 }
