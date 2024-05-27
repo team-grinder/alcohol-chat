@@ -12,14 +12,12 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "member", indexes = {
-        @Index(name = "idx_role", columnList = "role")
-})
+@Table(name = "member", indexes = {@Index(name = "idx_role", columnList = "role")})
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 
     @Id
     @Lob
