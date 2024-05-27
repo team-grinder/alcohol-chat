@@ -22,6 +22,10 @@ public class Pub extends BaseEntity {
     @Column(name = "pub_id", updatable = false)
     private UUID pubId;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
