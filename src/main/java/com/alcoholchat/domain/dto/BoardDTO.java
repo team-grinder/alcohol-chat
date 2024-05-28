@@ -12,6 +12,7 @@ public class BoardDTO {
     @NoArgsConstructor
     public static class Request {
         private String id;
+        private String name;
     }
 
     @Data
