@@ -34,11 +34,10 @@ public class JWTUtil {
         return getClaim(token).getExpiration().before(new Date());
     }
 
-    public String createJwt(String email, Role role, Long expiredHours) {
-        final Long EXPIRED_TIME = 1000 * 60 * 60 * expiredHours;
+    public String createJwt(String email, int expiredHours) {
+        final Long EXPIRED_TIME = 1000L * 60 * 60 * expiredHours;
         return Jwts.builder()
                 .claim("email", email)
-                .claim("role", role.getValue())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRED_TIME))
                 .signWith(secretKey)
