@@ -3,10 +3,12 @@ package com.alcoholchat.service.implement;
 import com.alcoholchat.domain.dto.MemberDTO;
 import com.alcoholchat.domain.entity.Member;
 import com.alcoholchat.service.MemberService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class MemberServiceImpl implements MemberService {
     @Override
     public Member saveMember(MemberDTO.Request request) {

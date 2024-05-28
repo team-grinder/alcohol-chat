@@ -3,10 +3,12 @@ package com.alcoholchat.service.implement;
 import com.alcoholchat.domain.dto.BoardDTO;
 import com.alcoholchat.domain.entity.Board;
 import com.alcoholchat.service.BoardService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class BoardServiceImpl implements BoardService {
     @Override
     public Board saveBoard(BoardDTO.Request request) {

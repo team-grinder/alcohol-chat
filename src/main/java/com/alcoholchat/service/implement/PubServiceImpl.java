@@ -3,10 +3,12 @@ package com.alcoholchat.service.implement;
 import com.alcoholchat.domain.dto.PubDTO;
 import com.alcoholchat.domain.entity.Pub;
 import com.alcoholchat.service.PubService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class PubServiceImpl implements PubService {
     @Override
     public Pub savePub(PubDTO.Request request) {

@@ -3,10 +3,12 @@ package com.alcoholchat.service.implement;
 import com.alcoholchat.domain.dto.ImageDTO;
 import com.alcoholchat.domain.entity.Image;
 import com.alcoholchat.service.ImageService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ImageServiceImpl implements ImageService {
     @Override
     public Image saveImage(ImageDTO.Request request) {
