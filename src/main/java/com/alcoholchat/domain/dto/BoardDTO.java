@@ -10,11 +10,15 @@ public class BoardDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Request {}
+    public static class Request {
+        private String id;
+    }
 
     @Data
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response {}
+    public static class Response {
+        private String id;
+    }
 }
