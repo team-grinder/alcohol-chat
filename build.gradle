@@ -46,7 +46,10 @@ dependencies {
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa'
 	annotationProcessor 'com.querydsl:querydsl-apt'
-	annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.0.0'
+
+	// javax.persistence API
+	implementation 'javax.persistence:javax.persistence-api:2.2'
+	annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 }
 
@@ -69,6 +72,7 @@ jacocoTestReport {
 }
 
 // QueryDSL 설정
+
 // sourceSets 섹션에서 main 소스셋에 생성된 Q타입 클래스 경로를 추가
 def querydslSrcDir = 'build/generated/querydsl'
 sourceSets {
@@ -78,14 +82,12 @@ sourceSets {
 		}
 	}
 }
-// compileJava 태스크에 컴파일러 옵션을 추가하여 QueryDSL이 생성한 Q타입 클래스에 @Generated 애노테이션을 추가. 생성된 Q타입 클래스가 포함된 디렉토리가 Java 소스 디렉토리에 포함된다.
-compileJava {
-	options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=javax.annotation.Generated'
-}
-// 모든 JavaCompile 태스크에 대해 generatedSourceOutputDirectory를 build/generated로 설정. Q타입 클래스가 지정된 디렉토리에 생성된다.
+
+// Q타입 클래스가 지정된 디렉토리에 생성
 tasks.withType(JavaCompile) {
 	options.generatedSourceOutputDirectory = file(querydslSrcDir)
 }
+
 // clean 태스크가 실행될 때 build/generated 디렉토리를 삭제하도록 설정
 clean {
 	delete file(querydslSrcDir)
