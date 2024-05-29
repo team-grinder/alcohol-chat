@@ -71,8 +71,7 @@ jacocoTestReport {
 	}
 }
 
-// QueryDSL 설정
-
+//-- QueryDSL 설정
 // sourceSets 섹션에서 main 소스셋에 생성된 Q타입 클래스 경로를 추가
 def querydslSrcDir = 'build/generated/querydsl'
 sourceSets {
@@ -84,11 +83,6 @@ sourceSets {
 }
 
 // Q타입 클래스가 지정된 디렉토리에 생성
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.generatedSourceOutputDirectory = file(querydslSrcDir)
-}
-
-// clean 태스크가 실행될 때 build/generated 디렉토리를 삭제하도록 설정
-clean {
-	delete file(querydslSrcDir)
 }
