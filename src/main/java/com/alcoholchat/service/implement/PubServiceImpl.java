@@ -37,16 +37,20 @@ public class PubServiceImpl implements PubService {
 
     @Override
     public List<Pub> findPubList() {
-        return List.of();
+        return pubRepository.findByIsDeletedFalse();
     }
 
     @Override
-    public Pub updatePub(PubDTO.Request request) {
-        return null;
+    public Pub updatePub(UUID pubId, PubDTO.Request request) {
+        Pub pub = findPub(pubId);
+        pub.update(request);
+        return pubRepository.save(pub);
     }
 
     @Override
     public void deletePub(UUID pubId) {
-
+        Pub pub = findPub(pubId);
+        pub.delete();
+        pubRepository.save(pub);
     }
 }
