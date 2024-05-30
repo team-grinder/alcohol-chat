@@ -35,9 +35,6 @@ public class Pub extends BaseEntity {
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    @Column(name = "phone_num", nullable = false, length = 11)
-    private String phoneNum;
-
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
