@@ -78,8 +78,8 @@ public class PubController {
         );
     }
 
-    @GetMapping("/publist")
-    public ResponseEntity<List<PubDTO.Response>> getAllPubList() {
+    @GetMapping("/allpub")
+    public ResponseEntity<List<PubDTO.Response>> getAllPub() {
         List<Pub> pubList = pubService.findPubList();
         return responseHandler.pubApiReturn(
                 pubList,
