@@ -83,7 +83,7 @@ public class PubController {
         List<Pub> pubList = pubService.findPubList();
         return responseHandler.pubApiReturn(
                 pubList,
-                "주점 리스트 조회 중 문제가 발생했습니다."
+                "주점 전체 조회 중 문제가 발생했습니다."
         );
     }
 }
