@@ -19,8 +19,8 @@ public class PubServiceImpl implements PubService {
     private final MemberService memberService;
 
     @Override
-    public Pub savePub(PubDTO.Request request) {
-        Member member = memberService.findMemberByEmail(request.getMember_email());
+    public Pub savePub(String memberEmail, PubDTO.Request request) {
+        Member member = memberService.findMemberByEmail(memberEmail);
         Pub newPub = Pub.builder()
                      .member(member)
                      .name(request.getName())

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PubService {
     // create
-    Pub savePub(PubDTO.Request request);
+    Pub savePub(String memberEmail, PubDTO.Request request);
     // read
     Pub findPub(UUID pubId);
     List<Pub> findPubList();

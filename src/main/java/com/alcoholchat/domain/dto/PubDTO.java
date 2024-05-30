@@ -14,7 +14,6 @@ public class PubDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
-        private String member_email;
         private String name;
         private String address;
         private String description;
