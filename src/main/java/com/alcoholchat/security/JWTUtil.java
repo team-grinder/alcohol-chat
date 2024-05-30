@@ -16,7 +16,7 @@ public class JWTUtil {
     private final SecretKey secretKey;
 
     // access 토큰 유효 시간: 1시간
-    public static final Long ACCESS_TOKEN_EXPIRED_TIME = 1000L * 6;
+    public static final Long ACCESS_TOKEN_EXPIRED_TIME = 1000L * 60 * 60;
 
     // refresh 토큰 유효 시간: 7일
     public static final Long REFRESH_TOKEN_EXPIRED_TIME = 1000L * 60 * 60 * 24 * 7;
