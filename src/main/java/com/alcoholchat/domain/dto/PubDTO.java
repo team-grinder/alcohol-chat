@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 public class PubDTO {
     @Data
     @Builder
@@ -32,7 +30,7 @@ public class PubDTO {
         // TODO : 태그
         // TODO : 태그
 
-        Response(Pub pub) {
+        public Response(Pub pub) {
             this.name = pub.getName();
             this.address = pub.getAddress();
             this.description = pub.getDescription();
