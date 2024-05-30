@@ -13,7 +13,7 @@ public interface PubService {
     Pub findPub(UUID pubId);
     List<Pub> findPubList();
     // update
-    Pub updatePub(UUID feedId, PubDTO.Request request);
+    Pub updatePub(UUID pubId, PubDTO.Request request);
     // delete
-    void deletePub(UUID pubId);
+    Pub deletePub(UUID pubId);
 }

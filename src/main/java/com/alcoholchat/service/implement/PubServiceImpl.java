@@ -48,9 +48,9 @@ public class PubServiceImpl implements PubService {
     }
 
     @Override
-    public void deletePub(UUID pubId) {
+    public Pub deletePub(UUID pubId) {
         Pub pub = findPub(pubId);
         pub.delete();
-        pubRepository.save(pub);
+        return pubRepository.save(pub);
     }
 }
