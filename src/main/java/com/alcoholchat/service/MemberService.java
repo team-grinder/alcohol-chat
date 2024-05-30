@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface MemberService {
     // create
-    Member saveMember(MemberDTO.Request request);
+    Boolean saveMember(MemberDTO.SignUpDTO dto);
     // read
     Member findMember(UUID memberId);
     List<Member> findMemberList();

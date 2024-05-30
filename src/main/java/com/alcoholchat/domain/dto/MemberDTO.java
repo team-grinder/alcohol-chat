@@ -14,7 +14,7 @@ public class MemberDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class signUpDTO {
+    public static class SignUpDTO {
         private String email;
         private String password;
         private String nickname;

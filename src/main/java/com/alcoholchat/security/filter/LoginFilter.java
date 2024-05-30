@@ -3,9 +3,11 @@ package com.alcoholchat.security.filter;
 import com.alcoholchat.security.JWTUtil;
 import com.alcoholchat.security.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,9 +46,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String username = customUserDetails.getUsername();
 
-        String token = jwtUtil.createJwt(username, 1);
+        String accessToken = jwtUtil.createJwt("access",username, JWTUtil.ACCESS_TOKEN_EXPIRED_TIME);
+        String refreshToken = jwtUtil.createJwt("refresh", username, JWTUtil.REFRESH_TOKEN_EXPIRED_TIME);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", "Bearer " + accessToken);
+        response.addCookie(jwtUtil.createRefreshCookie("refreshToken", refreshToken));
+        response.setStatus(HttpStatus.OK.value());
     }
 
     // 로그인 실패 시 실행할 메소드
@@ -54,4 +59,5 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
     }
+
 }
