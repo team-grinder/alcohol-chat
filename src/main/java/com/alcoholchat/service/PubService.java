@@ -8,12 +8,12 @@ import java.util.UUID;
 
 public interface PubService {
     // create
-    Pub savePub(PubDTO.Request request);
+    Pub savePub(String memberEmail, PubDTO.Request request);
     // read
     Pub findPub(UUID pubId);
     List<Pub> findPubList();
     // update
-    Pub updatePub(PubDTO.Request request);
+    Pub updatePub(UUID pubId, PubDTO.Request request);
     // delete
-    void deletePub(UUID pubId);
+    Pub deletePub(UUID pubId);
 }

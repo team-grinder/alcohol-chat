@@ -1,5 +1,6 @@
 package com.alcoholchat.domain.dto;
 
+import com.alcoholchat.domain.entity.Pub;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,9 @@ public class PubDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request {
-        private String id;
+        private String name;
+        private String address;
+        private String description;
     }
 
     @Data
@@ -19,6 +22,18 @@ public class PubDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Response {
-        private String id;
+        private String name;
+        private String address;
+        private String description;
+        // TODO : 이미지
+        // TODO : 좋아요
+        // TODO : 태그
+        // TODO : 태그
+
+        public Response(Pub pub) {
+            this.name = pub.getName();
+            this.address = pub.getAddress();
+            this.description = pub.getDescription();
+        }
     }
 }

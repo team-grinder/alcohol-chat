@@ -15,11 +15,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-
     private final MemberRepository memberRepository;
-
     private final BCryptPasswordEncoder encoder;
-
+  
     @Override
     public Boolean saveMember(MemberDTO.SignUpDTO dto) {
 
@@ -40,8 +38,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findMember(UUID memberId) {
-        return null;
+    public Member findMemberById(UUID memberId) {
+        return memberRepository.findById(memberId).orElse(null);
+    }
+
+    @Override
+    public Member findMemberByEmail(String memberEmail) {
+        return memberRepository.findByEmail(memberEmail).orElse(null);
     }
 
     @Override

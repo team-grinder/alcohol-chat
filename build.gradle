@@ -27,9 +27,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'com.github.f4b6a3:uuid-creator:5.3.2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
@@ -38,12 +37,17 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'com.github.f4b6a3:uuid-creator:5.3.2'
 
-	//JWT
+	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 }
 
 sonar {
@@ -62,4 +66,20 @@ jacocoTestReport {
 	reports {
 		xml.required = true
 	}
+}
+
+//-- QueryDSL 설정
+// sourceSets 섹션에서 main 소스셋에 생성된 Q타입 클래스 경로를 추가
+def querydslSrcDir = 'build/generated/querydsl'
+sourceSets {
+	main {
+		java {
+			srcDirs += [querydslSrcDir]
+		}
+	}
+}
+
+// Q타입 클래스가 지정된 디렉토리에 생성
+tasks.withType(JavaCompile).configureEach {
+	options.generatedSourceOutputDirectory = file(querydslSrcDir)
 }
