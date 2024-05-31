@@ -27,23 +27,34 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
-        if (authorization == null || authorization.startsWith("Bearer ")) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
 
             filterChain.doFilter(request, response);
 
             return;
         }
 
-        String token = authorization.split(" ")[1];
+        String accessToken = authorization.split(" ")[1];
 
-        if (jwtUtil.isExpired(token)) {
+        String category = jwtUtil.getCategory(accessToken);
 
-            filterChain.doFilter(request, response);
+        if (!category.equals("access")) {
+
+            response.getWriter().print("invalid access token");
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
 
-        String email = jwtUtil.getEmail(token);
+        if (jwtUtil.isExpired(accessToken)) {
+
+            // refresh token을 사용해서 재발급 로직
+
+            return;
+        }
+
+        String email = jwtUtil.getEmail(accessToken);
 
         // null일경우 조치 필요
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -54,4 +65,5 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

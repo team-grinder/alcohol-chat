@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface MemberService {
     // create
-    Member saveMember(MemberDTO.Request request);
+    Boolean saveMember(MemberDTO.SignUpDTO dto);
     // read
     Member findMemberById(UUID memberId);
     Member findMemberByEmail(String memberEmail);
