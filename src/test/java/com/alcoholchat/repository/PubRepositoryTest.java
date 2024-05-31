@@ -2,7 +2,6 @@ package com.alcoholchat.repository;
 
 import com.alcoholchat.domain.entity.Member;
 import com.alcoholchat.domain.entity.Pub;
-import com.alcoholchat.domain.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,8 +37,6 @@ class PubRepositoryTest {
                        .phoneNum("01012345678")
                        .preferLocal("local")
                        .birth(LocalDate.of(1990, 1, 1))
-                       .role(Role.MEMBER)
-                       .isDeleted(false)
                        .build();
 
         entityManager.persist(member);
@@ -50,7 +47,6 @@ class PubRepositoryTest {
                  .name("Test Pub")
                  .address("123 Test Street")
                  .description("A test description")
-                 .isDeleted(false)
                  .build();
 
         pubRepository.save(pub);

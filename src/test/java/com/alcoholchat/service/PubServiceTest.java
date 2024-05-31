@@ -3,7 +3,6 @@ package com.alcoholchat.service;
 import com.alcoholchat.domain.dto.PubDTO;
 import com.alcoholchat.domain.entity.Member;
 import com.alcoholchat.domain.entity.Pub;
-import com.alcoholchat.domain.enums.Role;
 import com.alcoholchat.repository.PubRepository;
 import com.alcoholchat.service.implement.PubServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -39,9 +38,39 @@ class PubServiceTest {
 
     private AutoCloseable closeable;
 
+    private Member member;
+    private Pub pub;
+    private PubDTO.Request request;
+    private UUID pubId;
+
     @BeforeEach
     void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
+
+        member = Member.builder()
+                       .email("test@example.com")
+                       .password("password")
+                       .nickname("nickname")
+                       .phoneNum("01012345678")
+                       .preferLocal("local")
+                       .birth(LocalDate.of(1990, 1, 1))
+                       .build();
+
+        pubId = UUID.randomUUID();
+        pub = Pub.builder()
+                 .pubId(pubId)
+                 .member(member)
+                 .name("Test Pub")
+                 .address("123 Test Street")
+                 .description("A test description")
+                 .isDeleted(false)
+                 .build();
+
+        request = PubDTO.Request.builder()
+                                .name("Test Pub")
+                                .address("123 Test Street")
+                                .description("A test description")
+                                .build();
     }
 
     @AfterEach
@@ -51,32 +80,18 @@ class PubServiceTest {
 
     @Test
     void savePub() {
-        // given
-        String memberEmail = "test@example.com";
-        Member member = Member.builder()
-                              .email(memberEmail)
-                              .password("password")
-                              .nickname("nickname")
-                              .phoneNum("01012345678")
-                              .preferLocal("local")
-                              .birth(LocalDate.of(1990, 1, 1))
-                              .role(Role.MEMBER)
-                              .isDeleted(false)
-                              .build();
-
-        PubDTO.Request request = PubDTO.Request.builder()
-                                               .name("Test Pub")
-                                               .address("123 Test Street")
-                                               .description("A test description")
-                                               .build();
-
+        // Given
         when(memberService.findMemberByEmail(anyString())).thenReturn(member);
-        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> {
+            Pub pub = invocation.getArgument(0);
+            pub.prePersist(); // Simulate @PrePersist
+            return pub;
+        });
 
-        // when
-        Pub savedPub = pubService.savePub(memberEmail, request);
+        // When
+        Pub savedPub = pubService.savePub(member.getEmail(), request);
 
-        // then
+        // Then
         assertNotNull(savedPub);
         assertEquals(request.getName(), savedPub.getName());
         assertEquals(request.getAddress(), savedPub.getAddress());
@@ -88,22 +103,13 @@ class PubServiceTest {
 
     @Test
     void findPub() {
-        // given
-        UUID pubId = UUID.randomUUID();
-        Pub pub = Pub.builder()
-                     .pubId(pubId)
-                     .name("Test Pub")
-                     .address("123 Test Street")
-                     .description("A test description")
-                     .isDeleted(false)
-                     .build();
-
+        // Given
         when(pubRepository.findById(pubId)).thenReturn(Optional.of(pub));
 
-        // when
+        // When
         Pub foundPub = pubService.findPub(pubId);
 
-        // then
+        // Then
         assertNotNull(foundPub);
         assertEquals(pubId, foundPub.getPubId());
         assertEquals(pub.getName(), foundPub.getName());
@@ -115,20 +121,13 @@ class PubServiceTest {
 
     @Test
     void findPubList() {
-        // given
-        Pub pub = Pub.builder()
-                     .name("Test Pub")
-                     .address("123 Test Street")
-                     .description("A test description")
-                     .isDeleted(false)
-                     .build();
-
+        // Given
         when(pubRepository.findByIsDeletedFalse()).thenReturn(Collections.singletonList(pub));
 
-        // when
+        // When
         List<Pub> pubs = pubService.findPubList();
 
-        // then
+        // Then
         assertNotNull(pubs);
         assertFalse(pubs.isEmpty());
         assertEquals(1, pubs.size());
@@ -139,33 +138,37 @@ class PubServiceTest {
 
     @Test
     void updatePub() {
-        // given
-        UUID pubId = UUID.randomUUID();
+        // Given
         Pub existingPub = Pub.builder()
                              .pubId(pubId)
+                             .member(member)
                              .name("Old Pub")
                              .address("Old Address")
                              .description("Old Description")
                              .isDeleted(false)
                              .build();
 
-        PubDTO.Request request = PubDTO.Request.builder()
-                                               .name("Updated Pub")
-                                               .address("Updated Address")
-                                               .description("Updated Description")
-                                               .build();
+        PubDTO.Request updateRequest = PubDTO.Request.builder()
+                                                     .name("Updated Pub")
+                                                     .address("Updated Address")
+                                                     .description("Updated Description")
+                                                     .build();
 
         when(pubRepository.findById(pubId)).thenReturn(Optional.of(existingPub));
-        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> {
+            Pub pub = invocation.getArgument(0);
+            pub.prePersist(); // Simulate @PrePersist
+            return pub;
+        });
 
-        // when
-        Pub updatedPub = pubService.updatePub(pubId, request);
+        // When
+        Pub updatedPub = pubService.updatePub(pubId, updateRequest);
 
-        // then
+        // Then
         assertNotNull(updatedPub);
-        assertEquals(request.getName(), updatedPub.getName());
-        assertEquals(request.getAddress(), updatedPub.getAddress());
-        assertEquals(request.getDescription(), updatedPub.getDescription());
+        assertEquals(updateRequest.getName(), updatedPub.getName());
+        assertEquals(updateRequest.getAddress(), updatedPub.getAddress());
+        assertEquals(updateRequest.getDescription(), updatedPub.getDescription());
 
         verify(pubRepository, times(1)).findById(pubId);
         verify(pubRepository, times(1)).save(any(Pub.class));
@@ -173,23 +176,18 @@ class PubServiceTest {
 
     @Test
     void deletePub() {
-        // given
-        UUID pubId = UUID.randomUUID();
-        Pub existingPub = Pub.builder()
-                             .pubId(pubId)
-                             .name("Test Pub")
-                             .address("123 Test Street")
-                             .description("A test description")
-                             .isDeleted(false)
-                             .build();
+        // Given
+        when(pubRepository.findById(pubId)).thenReturn(Optional.of(pub));
+        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> {
+            Pub pub = invocation.getArgument(0);
+            pub.prePersist(); // Simulate @PrePersist
+            return pub;
+        });
 
-        when(pubRepository.findById(pubId)).thenReturn(Optional.of(existingPub));
-        when(pubRepository.save(any(Pub.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // when
+        // When
         Pub deletedPub = pubService.deletePub(pubId);
 
-        // then
+        // Then
         assertNotNull(deletedPub);
         assertTrue(deletedPub.getIsDeleted());
 

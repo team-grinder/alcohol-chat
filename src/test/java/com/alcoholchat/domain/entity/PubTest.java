@@ -1,7 +1,6 @@
 package com.alcoholchat.domain.entity;
 
 import com.alcoholchat.domain.dto.PubDTO;
-import com.alcoholchat.domain.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,8 +33,6 @@ class PubTest {
                        .phoneNum("01012345678")
                        .preferLocal("local")
                        .birth(LocalDate.of(1990, 1, 1))
-                       .role(Role.MEMBER)
-                       .isDeleted(false)
                        .build();
 
         // Member 엔티티 영속화
@@ -47,7 +44,6 @@ class PubTest {
                  .name("Test Pub")
                  .address("123 Test Street")
                  .description("A test description")
-                 .isDeleted(false)
                  .build();
 
         // Pub 엔티티 영속화
