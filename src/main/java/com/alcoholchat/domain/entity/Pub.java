@@ -1,5 +1,6 @@
 package com.alcoholchat.domain.entity;
 
+import com.alcoholchat.domain.dto.PubDTO;
 import com.github.f4b6a3.uuid.UuidCreator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,9 +36,6 @@ public class Pub extends BaseEntity {
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    @Column(name = "phone_num", nullable = false, length = 11)
-    private String phoneNum;
-
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
@@ -45,5 +43,15 @@ public class Pub extends BaseEntity {
     public void prePersist() {
         pubId = UuidCreator.getTimeOrdered();
         isDeleted = isDeleted == null ? false : isDeleted;
+    }
+
+    public void update(PubDTO.Request request) {
+        this.name = request.getName();
+        this.address = request.getAddress();
+        this.description = request.getDescription();
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 }
