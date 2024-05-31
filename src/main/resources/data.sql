@@ -9,13 +9,13 @@ VALUES (X'123E4567E89B12D3A456426614174001', 'user1@example.com', 'password1', '
         '1994-03-03', 'MEMBER', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Pub 데이터 삽입
-INSERT INTO pub (pub_id, member_id, name, address, description, phone_num, is_deleted, created_at, updated_at)
+INSERT INTO pub (pub_id, member_id, name, address, description, is_deleted, created_at, updated_at)
 VALUES (X'423E4567E89B12D3A456426614174004', X'123E4567E89B12D3A456426614174001', 'Pub1', '123 Main St', 'A nice pub',
-        '01012345678', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (X'523E4567E89B12D3A456426614174005', X'223E4567E89B12D3A456426614174002', 'Pub2', '456 Side St', 'A cozy pub',
-        '01023456789', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (X'623E4567E89B12D3A456426614174006', X'323E4567E89B12D3A456426614174003', 'Pub3', '789 High St', 'A trendy pub',
-        '01034567890', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+        TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Board 데이터 삽입
 INSERT INTO board (board_id, pub_id, member_id, content, is_deleted, created_at, updated_at)
