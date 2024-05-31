@@ -177,8 +177,10 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Cookie createRefreshCookie(String refreshToken) {
 
+        int cookieExpireSecond = (int)(JWTUtil.REFRESH_TOKEN_EXPIRED_TIME / 1000);
+
         Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setMaxAge(cookieExpireSecond);
 //        cookie.setSecure(true);
         cookie.setPath("/reissue");
         cookie.setHttpOnly(true);
