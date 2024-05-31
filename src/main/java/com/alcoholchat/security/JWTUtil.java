@@ -56,15 +56,4 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
 
-    public Cookie createRefreshCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-//        cookie.setSecure(true);
-        cookie.setPath("/reissue");
-        cookie.setHttpOnly(true);
-
-        return cookie;
-    }
-
 }

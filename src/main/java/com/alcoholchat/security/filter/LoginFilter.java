@@ -1,9 +1,8 @@
 package com.alcoholchat.security.filter;
 
-import com.alcoholchat.security.JWTUtil;
 import com.alcoholchat.security.dto.CustomUserDetails;
+import com.alcoholchat.service.TokenService;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Collection;
 
 
 @RequiredArgsConstructor
@@ -23,7 +19,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    private final JWTUtil jwtUtil;
+    private final TokenService tokenService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -46,11 +42,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String username = customUserDetails.getUsername();
 
-        String accessToken = jwtUtil.createJwt("access",username, JWTUtil.ACCESS_TOKEN_EXPIRED_TIME);
-        String refreshToken = jwtUtil.createJwt("refresh", username, JWTUtil.REFRESH_TOKEN_EXPIRED_TIME);
+        String accessToken = tokenService.createAccessToken(username);
+        String refreshToken = tokenService.createRefreshToken(username);
 
         response.addHeader("Authorization", "Bearer " + accessToken);
-        response.addCookie(jwtUtil.createRefreshCookie("refreshToken", refreshToken));
+        response.addCookie(tokenService.createRefreshCookie(refreshToken));
         response.setStatus(HttpStatus.OK.value());
     }
 
