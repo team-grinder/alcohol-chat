@@ -3,6 +3,7 @@ package com.alcoholchat.config;
 import com.alcoholchat.security.JWTUtil;
 import com.alcoholchat.security.filter.JWTFilter;
 import com.alcoholchat.security.filter.LoginFilter;
+import com.alcoholchat.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,8 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
 
     private final UserDetailsService userDetailsService;
+
+    private final TokenService tokenService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -64,13 +67,14 @@ public class SecurityConfig {
         // 인가 작업
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll());
+                        .requestMatchers("/member/**", "/login", "/reissue").permitAll()
+                        .requestMatchers("/test").authenticated());
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil, userDetailsService), LoginFilter.class);
 
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), tokenService), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http

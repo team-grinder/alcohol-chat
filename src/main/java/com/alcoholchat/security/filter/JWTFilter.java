@@ -2,11 +2,14 @@ package com.alcoholchat.security.filter;
 
 import com.alcoholchat.domain.entity.Member;
 import com.alcoholchat.security.JWTUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 
@@ -27,7 +31,11 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
+        log.info("JWT filter start");
+
         if (authorization == null || !authorization.startsWith("Bearer ")) {
+
+            log.error("access token error. Authorization: " + authorization);
 
             filterChain.doFilter(request, response);
 
@@ -36,6 +44,32 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String accessToken = authorization.split(" ")[1];
 
+        try {
+
+            jwtUtil.isExpired(accessToken);
+
+        } catch (ExpiredJwtException e) {
+            log.error(e.getMessage() + " access token expired");
+//            request = new HttpServletRequestWrapper(request) {
+//                @Override
+//                public String getRequestURI() {
+//                    return "/reissue";
+//                }
+//
+//                @Override
+//                public String getMethod() {
+//                    return "POST";
+//                }
+//            };
+//            filterChain.doFilter(request, response);
+
+            response.setStatus(401);
+
+            filterChain.doFilter(request, response);
+
+            return;
+        }
+
         String category = jwtUtil.getCategory(accessToken);
 
         if (!category.equals("access")) {
@@ -43,13 +77,6 @@ public class JWTFilter extends OncePerRequestFilter {
             response.getWriter().print("invalid access token");
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
-        if (jwtUtil.isExpired(accessToken)) {
-
-            // refresh token을 사용해서 재발급 로직
 
             return;
         }
