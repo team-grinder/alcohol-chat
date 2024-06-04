@@ -1,6 +1,6 @@
 package com.alcoholchat.controller.entity;
 
-import com.alcoholchat.controller.responsehandler.PubApiResponseHandler;
+import com.alcoholchat.controller.handler.PubApiResponseHandler;
 import com.alcoholchat.domain.dto.PubDTO;
 import com.alcoholchat.domain.dto.SuccessResult;
 import com.alcoholchat.domain.entity.Pub;

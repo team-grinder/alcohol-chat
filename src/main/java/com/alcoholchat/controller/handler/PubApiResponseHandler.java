@@ -1,4 +1,4 @@
-package com.alcoholchat.controller.responsehandler;
+package com.alcoholchat.controller.handler;
 
 import com.alcoholchat.domain.dto.PubDTO;
 import com.alcoholchat.domain.dto.SuccessResult;
