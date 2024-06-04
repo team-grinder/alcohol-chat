@@ -5,7 +5,6 @@ import com.alcoholchat.domain.dto.PubDTO;
 import com.alcoholchat.domain.dto.SuccessResult;
 import com.alcoholchat.domain.entity.Member;
 import com.alcoholchat.domain.entity.Pub;
-import com.alcoholchat.domain.enums.Role;
 import com.alcoholchat.service.PubService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +43,6 @@ class PubControllerTest {
 
     private Member member;
     private Pub pub;
-    private UUID pubId;
-    private PubDTO.Request request;
 
     @BeforeEach
     void setUp() {
@@ -59,10 +56,9 @@ class PubControllerTest {
                        .phoneNum("1234567890")
                        .preferLocal("local")
                        .birth(LocalDate.now())
-                       .role(Role.MEMBER)
                        .build();
+        member.prePersist();
 
-        pubId = UUID.randomUUID();
         pub = Pub.builder()
                  .member(member)
                  .name("Test Pub")
@@ -70,12 +66,6 @@ class PubControllerTest {
                  .description("A place to test")
                  .build();
         pub.prePersist();
-
-        request = PubDTO.Request.builder()
-                                .name("Test Pub")
-                                .address("123 Test Street")
-                                .description("A place to test")
-                                .build();
     }
 
     @Test
