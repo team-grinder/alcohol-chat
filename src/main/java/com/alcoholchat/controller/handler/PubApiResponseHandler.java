@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public class PubApiResponseHandler {
-    public ResponseEntity<SuccessResult> pubApiReturn(
+    public ResponseEntity<SuccessResult> apiReturn(
             Pub pub,
             String memberEmail,
             String successCode,
@@ -28,7 +28,7 @@ public class PubApiResponseHandler {
         }
     }
 
-    public ResponseEntity<PubDTO.Response> pubApiReturn(
+    public ResponseEntity<PubDTO.Response> apiReturn(
             Pub pub,
             String errorMessage
     ) {
@@ -40,7 +40,7 @@ public class PubApiResponseHandler {
         }
     }
 
-    public ResponseEntity<List<PubDTO.Response>> pubApiReturn(
+    public ResponseEntity<List<PubDTO.Response>> apiReturn(
             List<Pub> pubList,
             String errorMessage
     ) {

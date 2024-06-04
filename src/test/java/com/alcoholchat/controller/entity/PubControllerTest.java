@@ -74,7 +74,7 @@ class PubControllerTest {
         SuccessResult successResult = new SuccessResult("Pub save success", "주점 정보가 저장되었습니다.");
 
         when(pubService.savePub(anyString(), any(PubDTO.Request.class))).thenReturn(pub);
-        when(responseHandler.pubApiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
+        when(responseHandler.apiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(successResult));
 
         // When
@@ -102,7 +102,7 @@ class PubControllerTest {
         SuccessResult successResult = new SuccessResult("Pub update success", "주점 정보가 수정되었습니다.");
 
         when(pubService.updatePub(any(UUID.class), any(PubDTO.Request.class))).thenReturn(updatedPub);
-        when(responseHandler.pubApiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
+        when(responseHandler.apiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(successResult));
 
         // When
@@ -122,7 +122,7 @@ class PubControllerTest {
         SuccessResult successResult = new SuccessResult("Pub delete success", "주점 정보가 삭제되었습니다.");
 
         when(pubService.deletePub(any(UUID.class))).thenReturn(pub);
-        when(responseHandler.pubApiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
+        when(responseHandler.apiReturn(any(Pub.class), anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(successResult));
 
         // When
@@ -138,7 +138,7 @@ class PubControllerTest {
         PubDTO.Response response = new PubDTO.Response(pub);
 
         when(pubService.findPub(any(UUID.class))).thenReturn(pub);
-        when(responseHandler.pubApiReturn(any(Pub.class), anyString()))
+        when(responseHandler.apiReturn(any(Pub.class), anyString()))
                 .thenReturn(ResponseEntity.ok(response));
 
         // When
@@ -166,7 +166,7 @@ class PubControllerTest {
         List<PubDTO.Response> responseList = Arrays.asList(response1, response2);
 
         when(pubService.findPubList()).thenReturn(pubList);
-        when(responseHandler.pubApiReturn(any(List.class), anyString()))
+        when(responseHandler.apiReturn(any(List.class), anyString()))
                 .thenReturn(ResponseEntity.ok(responseList));
 
         // When

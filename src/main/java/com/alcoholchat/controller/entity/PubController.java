@@ -27,7 +27,7 @@ public class PubController {
     ) {
         String memberEmail = "user1@example.com";   // TODO : 사용자 이메일로 변경
         Pub pub = pubService.savePub(memberEmail, request);
-        return responseHandler.pubApiReturn(
+        return responseHandler.apiReturn(
                 pub,
                 memberEmail,
                 "Pub save success",
@@ -43,7 +43,7 @@ public class PubController {
     ) {
         String memberEmail = "user1@example.com";   // TODO : 사용자 이메일로 변경
         Pub pub = pubService.updatePub(pub_id, request);
-        return responseHandler.pubApiReturn(
+        return responseHandler.apiReturn(
                 pub,
                 memberEmail,
                 "Pub update success",
@@ -58,7 +58,7 @@ public class PubController {
     ) {
         String memberEmail = "user1@example.com";   // TODO : 사용자 이메일로 변경
         Pub pub = pubService.deletePub(pub_id);
-        return responseHandler.pubApiReturn(
+        return responseHandler.apiReturn(
                 pub,
                 memberEmail,
                 "Pub delete success",
@@ -72,7 +72,7 @@ public class PubController {
             @PathVariable UUID pub_id
     ) {
         Pub pub = pubService.findPub(pub_id);
-        return responseHandler.pubApiReturn(
+        return responseHandler.apiReturn(
                 pub,
                 "주점 조회 중 문제가 발생했습니다."
         );
@@ -81,7 +81,7 @@ public class PubController {
     @GetMapping("/allpub")
     public ResponseEntity<List<PubDTO.Response>> getAllPub() {
         List<Pub> pubList = pubService.findPubList();
-        return responseHandler.pubApiReturn(
+        return responseHandler.apiReturn(
                 pubList,
                 "주점 전체 조회 중 문제가 발생했습니다."
         );
